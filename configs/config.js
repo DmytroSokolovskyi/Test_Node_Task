@@ -2,7 +2,7 @@ module.exports = {
     NODE_ENV: process.env.NODE_ENV || 'dev',
 
     MONGO_CONNECT_URL: process.env.MONGO_CONNECT_URL || 'mongodb://localhost:27017/Okten',
-    PORT: process.env.PORT || 5000,
+    PORT: process.env.PORT || 5001,
 
     EMAIL_LOGIN: process.env.EMAIL_LOGIN,
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,

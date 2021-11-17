@@ -1,12 +1,12 @@
-const { User, O_Auth } = require('../dataBase');
-const { emailService, userService} = require('../service');
+const { User } = require('../dataBase');
+const { emailService } = require('../service');
 const { errorsEnum, statusEnum } = require('../configs');
 const { emailActionEnum } = require('../configs');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await userService.getAllusers(req.query);
+            const users = await User.find();
 
             res.json(users);
         } catch (e) {
@@ -27,9 +27,9 @@ module.exports = {
     deleteUserById: async (req, res, next) => {
         try {
             const { user_id } = req.params;
-            const { email, name } = req.userById;
+            const { email, name } = req.user;
+
             await User.deleteOne({ _id : user_id });
-            await O_Auth.deleteMany({ user_id });
 
             await emailService.sendMail(email, emailActionEnum.GOODBYE, { userName: name });
 

@@ -39,23 +39,34 @@ const createUserValidator = Joi.object({
 });
 
 const userEditValidator = Joi.object({
+    username: Joi
+        .string()
+        .min(5)
+        .max(30)
+        .trim(),
     first_name: Joi
         .string()
         .min(2)
         .max(30)
-        .trim()
-        .required(),
+        .trim(),
     last_name: Joi
         .string()
         .min(2)
         .max(30)
-        .trim()
-        .required(),
+        .trim(),
     email: Joi
         .string()
         .regex(constants.EMAIL_REGEXP)
-        .lowercase()
-        .required(),
+        .lowercase(),
+    password: Joi
+        .string()
+        .regex(constants.PASSWORD_REGEXP)
+        .min(8)
+        .max(128)
+        .trim(),
+    user_type: Joi
+        .string()
+        .allow(...Object.values(userTypeEnum)),
 });
 
 module.exports = {

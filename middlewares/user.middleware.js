@@ -1,7 +1,7 @@
 const {isValidObjectId} = require('mongoose');
 
 const User = require('../dataBase/User');
-const {errorsEnum, statusEnum} = require('../configs');
+const {errorsEnum} = require('../configs');
 
 module.exports = {
     checkUserIdMiddleware: async (req, res, next) => {
@@ -26,15 +26,19 @@ module.exports = {
         }
     },
 
-    validateQuery: (validator) => async (req, res, next) => {
+    userCheckPass: async (req, res, next) => {
         try {
-            const {error, value} = await validator.validate(req.query);
+            const { user_id } = req.params;
 
-            if (error) {
-                return next({message: error.details[0].message, code: statusEnum.BAD_REQUEST});
+            const user = await User
+                .findOne({ _id : user_id })
+                .select('+password');
+
+            if (!user) {
+                return next(errorsEnum.NOT_FOUND);
             }
 
-            req.query = value;
+            req.user = user;
 
             next();
         } catch (e) {

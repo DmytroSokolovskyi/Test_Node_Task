@@ -17,8 +17,8 @@ module.exports ={
 
     validateBody: (validator) => async (req, res, next) => {
         try {
-
             const {error, value} = await validator.validate(req.body);
+
 
             if (error) {
                 return next({message: error.details[0].message, code: statusEnum.BAD_REQUEST});
@@ -46,20 +46,6 @@ module.exports ={
 
             if (oneItem && !checkToExist) {
                 req.one = oneItem;
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    checkRole: (roles = []) => (req, res, next) => {
-        try {
-            const { role } = req.user;
-
-            if (!roles.includes(role)) {
-                return next(errorsEnum.FORBIDDEN);
             }
 
             next();

@@ -3,15 +3,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const swaggerUI = require('swagger-ui-express');
 require('dotenv').config();
 
 const { config, statusEnum, errorsEnum } = require('./configs');
 const { userRouter } = require('./routes');
-const startCron = require('./cron');
 const { ErrorHandler } = require('./errors');
-// const { defaultData } = require('./util');
-const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
@@ -33,7 +29,6 @@ if (config.NODE_ENV === 'dev') {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 app.use('/users', userRouter);
 // eslint-disable-next-line no-unused-vars
 app.use('*', (err, req, res, next) => {
@@ -46,8 +41,6 @@ app.use('*', (err, req, res, next) => {
 
 app.listen(config.PORT, () => {
     console.log(`App work ${config.PORT}`);
-    // defaultData();
-    startCron();
 });
 
 function _configureCors(origin, callback) {
